@@ -13,7 +13,7 @@
 #include <QFile>
 #include <QRegularExpression>
 #include <QDir>
-#include <Windows.h>
+#include <hexlineedit.h>
 
 
 QT_BEGIN_NAMESPACE

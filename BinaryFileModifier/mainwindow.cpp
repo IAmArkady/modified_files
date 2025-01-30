@@ -37,7 +37,7 @@ void MainWindow::startModifiedFiles(){
         return;
     }
 
-    if (ui->LE_Xor->text().size() != 8){
+    if (ui->LE_Xor->text().size() != ui->LE_Xor->maxLength()){
         QMessageBox::warning(this, "Ошибка", "Значение XOR должно иметь 8 символов");
         return;
     }
@@ -92,7 +92,6 @@ void MainWindow::modifiedFiles(){
         }
 
         QFile modified_file;
-        QDataStream output_stream;
         QString path_saveFolder = ui->LE_SaveFolder->text();
         if (ui->CB_Overwrite->isChecked()){
             /* Перезапись модифицированного файла */
@@ -101,7 +100,6 @@ void MainWindow::modifiedFiles(){
                 addToList(modified_file.fileName() + ": « Ошибка открытия модифицированного файла »", QColor(255, 0, 0, 40));
                 continue;
             }
-            output_stream.setDevice(&modified_file);
         }
         else{
             /* Создание нового модифицированного файла */
@@ -130,12 +128,11 @@ void MainWindow::modifiedFiles(){
                 addToList(modified_file.fileName() + ": « Ошибка открытия модифицированного файла »", QColor(255, 0, 0, 40));
                 continue;
             }
-            output_stream.setDevice(&modified_file);
         }
         while(!file.atEnd()){
             QByteArray buffer = file.read(8),
-                result_xor = xorEncryptDecrypt(ui->LE_Xor->text().toUtf8(), buffer);
-            output_stream << result_xor;
+                result_xor = xorEncryptDecrypt(QByteArray::fromHex(ui->LE_Xor->text().remove(0, 2).toUtf8()), buffer);
+            modified_file.write(result_xor);
         }
 
         file.close();

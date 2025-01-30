@@ -73,12 +73,12 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="LE_Xor">
+              <widget class="HexLineEdit" name="LE_Xor">
                <property name="maxLength">
-                <number>8</number>
+                <number>10</number>
                </property>
                <property name="placeholderText">
-                <string>xxxxxxxx</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -429,6 +429,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>HexLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>hexlineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
