@@ -22,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->PB_Stop->setVisible(false);
     ui->LE_WorkFolder->setText(QDir::currentPath());
+
+    ui->LE_Xor->setText("0000000000000000");
+    ui->LE_Xor->setInputMask(">HH.HH.HH.HH.HH.HH.HH.HH");
+
 }
 
 void MainWindow::stopModifiedFiles(){
@@ -37,8 +41,10 @@ void MainWindow::startModifiedFiles(){
         return;
     }
 
-    if (ui->LE_Xor->text().size() != ui->LE_Xor->maxLength()){
-        QMessageBox::warning(this, "Ошибка", "Значение XOR должно иметь 8 символов");
+    QString xor_key = ui->LE_Xor->text().replace(".", "");
+    size_t count_point = ui->LE_Xor->maxLength()-ui->LE_Xor->text().count(".");
+    if (xor_key.size() != count_point){
+        QMessageBox::warning(this, "Ошибка", "Значение XOR должно иметь " + QString::number(count_point) + " символов");
         return;
     }
 
@@ -130,8 +136,9 @@ void MainWindow::modifiedFiles(){
             }
         }
         while(!file.atEnd()){
+            QString xor_key = ui->LE_Xor->text().replace(".", "");
             QByteArray buffer = file.read(8),
-                result_xor = xorEncryptDecrypt(QByteArray::fromHex(ui->LE_Xor->text().remove(0, 2).toUtf8()), buffer);
+                result_xor = xorEncryptDecrypt(QByteArray::fromHex(xor_key.toUtf8()), buffer);
             modified_file.write(result_xor);
         }
 
