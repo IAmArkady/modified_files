@@ -69,7 +69,7 @@ void MainWindow::setInteractiveWidgets(QWidget* widget, bool interactive){
 
 void MainWindow::modifiedFiles(){
     addToList("Запуск работы программы");
-    QDir dir(QDir::currentPath());
+    QDir dir(ui->LE_WorkFolder->text());
     QFileInfoList files;
 
     QStringList list_mask = ui->LE_Mask->text().split(',');
