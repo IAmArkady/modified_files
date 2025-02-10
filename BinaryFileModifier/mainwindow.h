@@ -5,14 +5,15 @@
 #include <QFileDialog>
 #include <QDataStream>
 #include <QMessageBox>
-#include <QByteArray>
-#include <QBuffer>
 #include <QScrollBar>
 #include <QListView>
 #include <QTimer>
 #include <QFile>
-#include <QRegularExpression>
+#include <QUiLoader>
 #include <QDir>
+#include <QThread>
+#include <QProgressBar>
+#include "modifiedfilexor.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -22,6 +23,10 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    Ui::MainWindow *ui;
+    QUiLoader ui_load;
+    QTimer *timer;
+    QMap<QString, QWidget*> file_widgets;
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -31,13 +36,15 @@ private slots:
     void selectWorkFolder();
     void startModifiedFiles();
     void stopModifiedFiles();
+    void updateProgress(QString file_path, quint64 byte);
+    void modifiedFinished(QString file_path, QString new_file_path, QString error);
 
 private:
-    Ui::MainWindow *ui;
-    QTimer *timer;
     void addToList(QString text, QColor color_row = Qt::white, QColor color_text = Qt::black, bool time = true);
-    QByteArray xorEncryptDecrypt(QByteArray xor_key, QByteArray data);
-    void modifiedFiles();
+    void addToList(QWidget* widget);
+    void modifiedFile(QString filepath);
     void setInteractiveWidgets(QWidget* wiget, bool interactive);
+    QWidget* loadUI(QString file_path);
+    QFileInfoList getFilesFromMask(QString dir_path, QString mask);
 };
 #endif // MAINWINDOW_H

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+	<file>fileProgress.ui</file>
+	</qresource>
+</RCC>

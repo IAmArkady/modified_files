@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui uitools
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,13 +10,19 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    modifiedfilexor.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    modifiedfilexor.h
 
 FORMS += \
+    fileProgress.ui \
     mainwindow.ui
+
+RESOURCES += resources.qrc \
+    resources.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
